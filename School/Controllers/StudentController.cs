@@ -42,19 +42,24 @@ namespace School.Controllers
     [HttpPost]
     public ActionResult Edit(Student student)
     {
-      System.Diagnostics.Debugger.Break();
-      if (student.Id == 0)
+      if (ModelState.IsValid)
       {
-        student.Id = GetNewId();
-        students.Add(student);
+        if (student.Id == 0)
+        {
+          student.Id = GetNewId();
+          student.Name = student.Name.Trim();
+          students.Add(student);
+        }
+        else
+        {
+          var targetStudent = students.Find(s => s.Id == student.Id);
+          targetStudent.Name = student.Name.Trim();
+          targetStudent.Age = student.Age;
+        }
+        return RedirectToAction("Index");
       }
-      else
-      {
-        var targetStudent = students.Find(s => s.Id == student.Id);
-        targetStudent.Name = student.Name;
-        targetStudent.Age = student.Age;
-      }
-      return RedirectToAction("Index");
+
+      return View(student);
     }
 
     public ActionResult Create()
