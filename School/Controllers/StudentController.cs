@@ -17,7 +17,7 @@ namespace School.Controllers
 
     private int GetNewId()
     {
-      return students.Max(s => s.Id) + 1;
+      return students.Count == 0 ? 1 : students.Max(s => s.Id) + 1;
     }
 
     // GET: Student
@@ -61,5 +61,20 @@ namespace School.Controllers
     {
       return RedirectToAction("Edit");
     }
+
+    public ActionResult Delete(int id)
+    {
+      var student = students.Find(s => s.Id == id);
+      return View(student);
+    }
+
+    [HttpPost]
+    public ActionResult Delete(Student student)
+    {
+      var index = students.FindIndex(s => s.Id == student.Id);
+      if (index > -1) students.RemoveAt(index);
+      return RedirectToAction("Index");
+    }
+
   }
 }
