@@ -42,6 +42,7 @@ namespace School.Controllers
     // GET: Student
     public ActionResult Index()
     {
+      ViewData["studentCount"] = students.Count;
       return View(students);
     }
 
