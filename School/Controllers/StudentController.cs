@@ -1,6 +1,7 @@
 ﻿using School.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +16,25 @@ namespace School.Controllers
         new Student() {Id = 3, Name = "Albert", Age = 15}
       };
 
-    private int GetNewId()
+    public static ValidationResult UniqueName(string name, ValidationContext context)
+    {
+      if (name == null) return ValidationResult.Success;
+      var student = (Student)context.ObjectInstance;
+      var nameIsDuplicated = students
+        .Where(s => s.Id != student.Id)
+        .Select(s => s.Name.ToLower())
+        .Contains(name.ToLower());
+      if (nameIsDuplicated)
+      {
+        return new ValidationResult("Name already exists in database.");
+      }
+      else
+      {
+        return ValidationResult.Success;
+      }
+    }
+
+    static int GetNewId()
     {
       return students.Count == 0 ? 1 : students.Max(s => s.Id) + 1;
     }

@@ -9,7 +9,7 @@ namespace School.Models
   public class Student
   {
     public int Id { get; set; }
-    [Required] public string Name { get; set; }
+    [Required] [CustomValidation(typeof(Controllers.StudentController), "UniqueName")] public string Name { get; set; }
     [Range(6, 18)] public int Age { get; set; }
   }
 }
