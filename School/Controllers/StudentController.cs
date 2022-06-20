@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace School.Controllers
 {
+  [Filters.LogAction]
   public class StudentController : Controller
   {
     static readonly List<Student> students = new List<Student> {
